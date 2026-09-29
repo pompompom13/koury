@@ -16,7 +16,10 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Forum&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<script>document.documentElement.className += ' js';</script>
+<script>
+  document.documentElement.className += ' js';
+  try { if (localStorage.getItem('koury-age') === 'yes') document.documentElement.className += ' age-ok'; } catch (e) {}
+</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -31,6 +34,24 @@
 </script>
 </head>
 <body>
+
+<div class="age" id="age" role="dialog" aria-modal="true" aria-labelledby="ageTitle">
+  <div class="age__box">
+    <img src="img/logo.svg" alt="KOURY" class="age__logo" width="319" height="90">
+    <div class="age__ask" id="ageAsk">
+      <p class="age__title" id="ageTitle">Вам уже есть 18?</p>
+      <p class="age__text">На&nbsp;сайте есть информация о&nbsp;кальянах и&nbsp;алкоголе, поэтому он&nbsp;только для взрослых гостей.</p>
+      <div class="age__btns">
+        <button type="button" class="btn btn--peach" id="ageYes">Да, мне есть 18</button>
+        <button type="button" class="btn btn--ghost" id="ageNo">Нет</button>
+      </div>
+    </div>
+    <div class="age__deny" id="ageDeny" hidden>
+      <p class="age__title">Будем ждать вас позже</p>
+      <p class="age__text">К&nbsp;сожалению, сайт доступен только совершеннолетним.</p>
+    </div>
+  </div>
+</div>
 
 <header class="topbar" id="top">
   <div class="topbar__in">

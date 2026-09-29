@@ -1,6 +1,17 @@
 (function () {
   var OPEN = 13, CLOSE = 24; // ежедневно 13:00–00:00
 
+  // --- age gate ---
+  var root = document.documentElement;
+  document.getElementById('ageYes').addEventListener('click', function () {
+    try { localStorage.setItem('koury-age', 'yes'); } catch (e) {}
+    root.classList.add('age-ok');
+  });
+  document.getElementById('ageNo').addEventListener('click', function () {
+    document.getElementById('ageAsk').hidden = true;
+    document.getElementById('ageDeny').hidden = false;
+  });
+
   // --- menu ---
   var body = document.getElementById('menuBody');
   var tabs = document.querySelectorAll('.tab');
