@@ -1,7 +1,8 @@
-// Ссылка на Google Таблицу, опубликованную в формате CSV
-// (Файл → Поделиться → Опубликовать в интернете → CSV).
+// Ссылка на Google Таблицу с меню в формате выгрузки CSV:
+// https://docs.google.com/spreadsheets/d/ID_ТАБЛИЦЫ/export?format=csv&gid=ID_ЛИСТА
+// Таблица должна быть открыта по ссылке для просмотра («Все, у кого есть ссылка» – «Читатель»).
 // Пока ссылки нет, сайт показывает резервную копию меню из menu.js.
-var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gEFAG0RvjQQ6J7ZI-FkyNBYGTa2-VFRlIntMz2haddNma1nlniAI54qStwU2Dpi2D/pub?gid=1394287552&single=true&output=csv';
+var MENU_URL = 'https://docs.google.com/spreadsheets/d/1uCrJ5biwnwGtp7rmjAqXMMwSAY-tb3OZuTVX1qVPndY/export?format=csv&gid=1394287552';
 
 (function () {
   var OPEN = 13, CLOSE = 24; // ежедневно 13:00–00:00
@@ -22,6 +23,7 @@ var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gE
   var tabsBox = document.getElementById('menuTabs');
   var hookahList = document.getElementById('hookahList');
   var showBox = document.getElementById('showCards');
+  var hookahSection = document.getElementById('hookah');
   var HOOKAH_TAB = 'кальяны';
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
@@ -121,13 +123,28 @@ var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gE
         renderSections(menuTabs[+b.dataset.i].sections);
       });
     });
-    if (menuTabs[0]) renderSections(menuTabs[0].sections);
+    var keep = Math.min(activeTab, menuTabs.length - 1);
+    if (keep > 0) btns[keep].click(); else if (menuTabs[0]) renderSections(menuTabs[0].sections);
     body.classList.remove('is-loading'); tabsBox.classList.remove('is-loading');
+    if (hookahSection) hookahSection.classList.remove('is-loading');
   }
 
-  var done = false;
-  function finish(rows) { if (done) return; done = true; renderAll(rows); }
-  function fallback() { finish(window.KOURY_FALLBACK || []); }
+  // Порядок: свежая таблица → последняя удачно загруженная таблица (в браузере гостя) → menu.js.
+  var CACHE_KEY = 'koury-menu-rows', gotSheet = false, shown = false, activeTab = 0;
+  tabsBox.addEventListener('click', function (e) {
+    var b = e.target.closest('.tab'); if (b) activeTab = +b.dataset.i;
+  });
+  function fromSheet(rows) {
+    gotSheet = true; shown = true; renderAll(rows);
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify(rows)); } catch (e) {}
+  }
+  function fallback() {
+    if (gotSheet || shown) return;
+    shown = true;
+    var cached = null;
+    try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch (e) {}
+    renderAll(cached && cached.length ? cached : (window.KOURY_FALLBACK || []));
+  }
 
   if (!MENU_URL || !window.Papa) {
     fallback();
@@ -138,7 +155,7 @@ var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gE
       complete: function (res) {
         var rows = (res && res.data) || [];
         var ok = rows.some(function (r) { return val(r, 'вкладка') && val(r, 'название'); });
-        if (ok) finish(rows); else fallback();
+        if (ok) fromSheet(rows); else fallback(); // если таблица пришла позже 5 секунд – всё равно обновим цены
       },
       error: fallback
     });
