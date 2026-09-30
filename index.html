@@ -130,7 +130,7 @@
     <div class="frame reveal">
       <p class="eyebrow">Кальянная карта</p>
       <h2 class="h2 h2--center">Кальяны</h2>
-      <ul class="price-list price-list--hookah">
+      <ul class="price-list price-list--hookah" id="hookahList">
         <li><div><span class="pl__name">Классический</span><span class="pl__note">при заказе от 2-х кальянов – 2&nbsp;300&nbsp;₽</span></div><span class="pl__price">2&nbsp;500&nbsp;₽</span></li>
         <li><div><span class="pl__name">Премиальный</span><span class="pl__note">сигарный</span></div><span class="pl__price">2&nbsp;900&nbsp;₽</span></li>
         <li><div><span class="pl__name">На фрукте</span><span class="pl__note">гранат, грейпфрут</span></div><span class="pl__price">3&nbsp;300&nbsp;₽</span></li>
@@ -138,7 +138,7 @@
       </ul>
     </div>
 
-    <div class="signature">
+    <div class="signature" id="showCards">
       <article class="sig sig--fire reveal">
         <p class="sig__tag">Шоу-подача</p>
         <h3 class="sig__title">Pomegranate Shot</h3>
@@ -167,13 +167,8 @@
       </div>
       <button class="link-btn" id="openOriginal" type="button">Меню в&nbsp;оригинале&nbsp;→</button>
     </div>
-    <div class="tabs" role="tablist" aria-label="Разделы меню">
-      <button role="tab" class="tab is-active" aria-selected="true" data-tab="kitchen">Кухня</button>
-      <button role="tab" class="tab" aria-selected="false" data-tab="bar">Бар</button>
-      <button role="tab" class="tab" aria-selected="false" data-tab="tea">Чай и&nbsp;кофе</button>
-      <button role="tab" class="tab" aria-selected="false" data-tab="soft">Без алкоголя</button>
-    </div>
-    <div class="menu__body" id="menuBody" aria-live="polite"></div>
+    <div class="tabs is-loading" role="tablist" aria-label="Разделы меню" id="menuTabs"><span class="sk sk--tab"></span><span class="sk sk--tab"></span><span class="sk sk--tab"></span></div>
+    <div class="menu__body is-loading" id="menuBody" aria-live="polite"><section class="mgroup"><span class="sk sk--h"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span></section><section class="mgroup"><span class="sk sk--h"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span><span class="sk sk--row"></span></section></div>
     <p class="menu__note">Цены в&nbsp;рублях. Наличие подскажет официант или администратор по&nbsp;телефону <a href="tel:+79855522947">+7&nbsp;(985)&nbsp;552-29-47</a>.</p>
   </div>
 </section>
@@ -313,6 +308,7 @@
   <div class="viewer__img"><img id="viewerImg" src="img/menu-hookah.webp" alt="Меню KOURY в оригинале"></div>
 </dialog>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 <script src="menu.js"></script>
 <script src="app.js"></script>
 </body>
