@@ -1,7 +1,7 @@
 // Ссылка на Google Таблицу, опубликованную в формате CSV
 // (Файл → Поделиться → Опубликовать в интернете → CSV).
 // Пока ссылки нет, сайт показывает резервную копию меню из menu.js.
-var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gEFAG0RvjQQ6J7ZI-FkyNBYGTa2-VFRlIntMz2haddNma1nlniAI54qStwU2Dpi2D/pubhtml';
+var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gEFAG0RvjQQ6J7ZI-FkyNBYGTa2-VFRlIntMz2haddNma1nlniAI54qStwU2Dpi2D/pub?gid=1394287552&single=true&output=csv';
 
 (function () {
   var OPEN = 13, CLOSE = 24; // ежедневно 13:00–00:00
@@ -75,10 +75,11 @@ var MENU_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK29gBfvYxNz9gE
   function renderHookah(tab) {
     if (!tab) return;
     var cards = showBox ? [].slice.call(showBox.querySelectorAll('.sig')) : [];
+    if (hookahList) hookahList.innerHTML = '';
     tab.sections.forEach(function (g) {
       var isShow = /шоу/i.test(g.title);
       if (!isShow && hookahList) {
-        hookahList.innerHTML = g.items.map(function (it) {
+        hookahList.innerHTML += g.items.map(function (it) {
           return '<li><div><span class="pl__name">' + esc(it.name) + '</span>' +
             (it.desc ? '<span class="pl__note">' + esc(it.desc) + '</span>' : '') +
             '</div><span class="pl__price">' + esc(it.price) + '</span></li>';
